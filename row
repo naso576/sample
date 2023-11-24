@@ -1,0 +1,59 @@
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button , SafeAreaView} from 'react-native';
+import { useRouter, useSearchParams, Link, router} from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+
+
+
+const RowComponent = () => {
+  const [rows, setRows] = useState([]);
+  const [disease, setDisease] = useState('');
+  const [medication, setMedication] = useState('');
+  const [duration, setDuration] = useState('');
+  const router=useRouter();
+//  const isPresented = router.back();
+  // Function to add a new row
+  const addRow = () => {
+    const newRow={disease,medication,duration};
+    setRows([...rows, newRow, { id: rows.length + 1 }]);
+    setDisease('');
+    setDuration('');
+    setMedication('');
+  };
+
+  // Function to delete a row
+  const deleteRow = (id) => {
+    const updatedRows = rows.filter((row) => row.id !== id);
+    setRows(updatedRows);
+  };
+
+  return(
+    <View style={{flex:1, alignContent:'center',alignItems:'center',justifyContent:'center', borderColor:'green'}}>
+     <Text>Please enter the co morbidities of the patient by clicking Add button</Text>
+    
+
+    <Button title="Add" onPress={addRow} />
+    <View style={{ flexDirection: 'row' }}>
+        <Text style={{ flex: 1 }}>Disease</Text>
+        <Text style={{ flex: 1 }}>Duration</Text>
+        <Text style={{ flex: 1 }}>Medication</Text>
+      </View>
+
+    {rows.map((row, index) => (
+      <View key={index} style={{flexDirection:'row', justifyContent:'center',alignItems:'center',borderRightWidth:2,borderLeftWidth:2,borderBottomWidth:2,borderEndWidth:2}}>
+        <TextInput style={{padding:10}} label='' placeholder='Disease'></TextInput>
+        <TextInput style={{padding:10}} label='' placeholder='Duration'></TextInput>
+        <TextInput style={{padding:10}} label='' placeholder='Medication used '></TextInput>
+        <Button title="Del" onPress={() => deleteRow(row.id)} />
+        <StatusBar style="dark" />
+      </View>
+    ))}
+
+  </View>
+    
+   
+  )
+  
+};
+
+export default RowComponent;
